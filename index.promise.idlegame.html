@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        //
+        // ###########################
+        // ### DICE - BATTLE ROYAL ###
+        // ###########################
+        //
+        //  Rules:
+        //  * There can be between 2 and 16 players
+        //  * Each turn, each player rolls a 20-sided die; the player who rolls the lowest number is eliminated
+        //  * The game ends when there is only one player left
+
+        // #### RULES CONST ####
+        const gameRules = {
+            minPlayer: 2,           // min number of player to start a game
+            maxPlayer: 16,          // max number of player to start a game
+            sidedDiceValue: 20,     // value of the sided-dice
+            maxThrowDuration: 2000  // value of duration to throw a dice (in ms)
+        }
+
+        // #### CLASSES Player ####
+        class Player {
+            _id
+
+            /**
+             * @param {string} id 
+             */
+            constructor(id) {
+                this._id = id
+            }
+            getId() {
+                return this._id
+            }
+        }
+
+        // <!=== Generate randomly an array of (new) player
+        /**
+         * @returns {Array<Player>}
+         */
+        function generatePlayers() {
+            const nPlayers = Math.round(
+                    Math.random() * (gameRules.maxPlayer - gameRules.minPlayer)
+                ) + gameRules.minPlayer
+
+            const players = []
+            for (let i = 0; i < nPlayers; i++) 
+                players.push(new Player(i))
+            return players
+        }
+
+        // <!== Generate a dice value with specific max value of 'side'
+        function diceValue() {
+            return Math.floor(Math.random() * gameRules.sidedDiceValue)+1
+        }
+        // <!=== Throw a dice with a specific max value of 'throw duration' and return a random value
+        async function throwADice(player) {
+            return new Promise((resolve) => {
+                const throwDuration = Math.random() * gameRules.maxThrowDuration
+                const dValue = diceValue()
+                setTimeout(() => {
+                    resolve({dValue, throwDuration})
+                }, throwDuration)
+            })
+        }
+
+        // #### CLASSES RoundScore ####
+        // Contain the score (diceValue) of a Player at the end of round
+        class RoundScore {
+            _wave
+            _player
+            _diceValue
+            _throwDuration
+            /**
+             * @param {number} wave
+             * @param {Player} player
+             * @param {number} diceValue
+             * @param {number} throwDuration
+             */
+            constructor(wave, player, diceValue, throwDuration) {
+                this._wave = wave
+                this._player = player
+                this._diceValue = diceValue
+                this._throwDuration = throwDuration
+            }
+            getPlayer() {
+                return this._player
+            }
+            getScore() {
+                return this._diceValue
+            }
+            /** 
+             * @returns {string}
+             */
+            formatScore() {
+                return 'Player [ID: ' + this._player.getId() + "]"
+                    + ' diceValue:' + this._diceValue 
+                    + ' duration:' + Math.round(this._throwDuration) / 1000 + 's'
+            }
+        }
+
+        // <!=== Return an array of winners and an other array of losers
+        function testScore(rScores) {
+            // >> Search for the lowest score value
+            let minScore = gameRules.sidedDiceValue+1 // search init
+            rScores.forEach(s => {
+                if (s.getScore() < minScore)
+                    minScore = s.getScore()
+            });
+
+            // >> Create array of winners & losers
+            const winners = []
+            const losers = []
+            rScores.forEach(s => {
+                if (s.getScore() == minScore)
+                    losers.push(s.getPlayer())
+                else
+                    winners.push(s.getPlayer())
+            });
+            return {winners, losers}
+        }
+
+        // <!=== Start a new round, each player will throw the dice in a random duration
+        async function createRound(nRound, players) {
+            console.log('Start of the round (' + nRound + ')')
+            return new Promise((resolve, reject) => {
+                const pArray = []
+                const rScores = []
+
+                // >> Each player throw a dice <<
+                players.forEach(p => {
+                    pArray.push(t = throwADice())
+                    t.then((value) => {
+                        const score = new RoundScore(nRound, p, value.dValue, value.throwDuration)
+                        console.log(score.formatScore())
+                        rScores.push(score)
+                    })
+                })
+
+                // >> When ALL player have throwed the dice <<
+                Promise.all(pArray).then(() => {
+                    console.log("End of the round")
+                    resolve(testScore(rScores))
+                })
+            })
+        }
+
+        async function main() {
+            const allPlayers = generatePlayers()
+
+            console.log(
+                'Start new game with [' + allPlayers.length + '] players. '
+                + '[min/max: ' + gameRules.minPlayer + '/' + gameRules.maxPlayer+']')
+
+            // Init game and first round..
+            let wave = 1
+            let currentPlayers = allPlayers
+            
+            // Game engine runner
+            while (currentPlayers.length > 0) {
+                const round = createRound(wave, currentPlayers)
+                round.then((round) => {
+                    // End of the round X
+                    const winnersCount = round.winners.length
+                    const losersCount = round.losers.length
+
+                    // UC-1: Still some player, need a new round
+                    if (winnersCount > 1) {
+                        console.log(
+                            losersCount + " player(s) are eliminated on this round, and "
+                            + winnersCount + " are still in the race !"
+                        )
+
+                        // init next round...
+                        currentPlayers = round.winners
+                        wave++
+                    
+                    // UC-2: Same score, no winners / no losers
+                    } else if (winnersCount == 0 && losersCount > 1) {
+                        console.log(
+                            "Rematch !"
+                        )
+                        wave++
+
+                    // UC-3: No more player, we got a winner
+                    } else {
+                        console.log(
+                            "We got a winner !!!\n"
+                            + ">> Player [ID: " + round.winners[0].getId() + "] win the game."
+                        )
+                        currentPlayers = []
+                    }
+                })
+                await round
+            }
+
+            console.log("End of the game..")
+        }
+        main()
+        
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

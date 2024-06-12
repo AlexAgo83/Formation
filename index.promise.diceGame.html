@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // Dice game
+        // while dice value is not 6 you WIN ?
+
+        function throwDice() {
+            return Math.floor(Math.random() * 6)+1
+        }
+
+        function startRound(playerName, turn) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const dice = throwDice()
+                    console.log(
+                        playerName + ", " 
+                        + turn + ": dice value is [" 
+                        + dice + "]")
+                    if (dice !== 6) {
+                        reject(dice)
+                    } else {
+                        resolve()
+                    }
+                }, 1000)
+            })
+            .then(() => {
+                console.log("Game over")
+            })
+            .catch((d) => {
+                startRound(playerName, ++turn)
+            })
+        }
+
+        startRound("John", 0)
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

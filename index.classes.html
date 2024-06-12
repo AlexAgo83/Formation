@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // Classes +test driveLicence
+        const people = []
+        class Person {
+            _firstName
+            _lastName
+            _age
+
+            constructor(firstName, lastName, age) {
+                this._firstName = firstName
+                this._lastName = lastName
+                this._age = age
+            }
+
+            canDrive(ageMin) {
+                return this._age >= ageMin
+            }
+            
+            whoIs() {
+                return this._firstName 
+                    + ' ' + this._lastName 
+                    + ', age: ' + this._age
+            }
+        }
+
+        people.push(new Person('John', 'Doe', 20))
+        people.push(new Person('Obiwan', 'Kenobi', 40))
+        people.push(new Person('Jack', 'Boom', 10))
+
+        people.forEach(p => {
+            console.log(p.whoIs() + " canDrive ? " + p.canDrive())
+        });
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

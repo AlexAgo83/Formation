@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const p = new Promise((resolve, reject) => {
+            resolve(4)
+            // reject(4)
+        })
+
+        p.then((n) => {
+            console.log("Value: " + n)
+            return 10
+        })
+        .then((n) => {
+            console.log("Value: " + n)
+        })
+        .catch((e) => {
+            console.log("Erreur: " + e)
+        })
+        .finally(() => console.log("Fin du test"))
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

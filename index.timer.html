@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // Countdown test, ex: 5, 4, 3, 2, 1 ... Go !
+        const interval = 1000
+        function extractNearestValue(timeMs) {
+            const count = Math.round(timeMs / 1000)
+            console.log(
+                'Nearest \'count\' value before \'Go\' from ' 
+                + timeMs + ' is: ' + count)
+            return count
+        }
+
+        function showCountdown(i) {
+            console.log(i===0 ? "Go !" : i + " !")
+        }
+
+        // Methode test 1
+        function countdownM1(count) {
+            console.log("M1")
+            let waiTime = interval
+            for (let i = count; i >= 0; i--) {
+                setTimeout(() => {
+                    showCountdown(i)
+                }, waiTime)
+                waiTime+=interval
+            }
+        }
+
+        // Methode test 2
+        function countdownM2(count) {
+            console.log("M2")
+            const it = setInterval(() => {
+                if (count>=0) {
+                    showCountdown(count)
+                    count--
+                } else
+                    clearInterval(it)
+            }, interval)
+        }
+
+        // Methode test 3
+        function countdownM3(count) {
+            console.log("M3")
+            const cde = function (c) {
+                if (c>=0)
+                    setTimeout(() => {
+                        showCountdown(c)
+                        cde(--c)
+                    }, interval)
+            }
+            cde(count)
+        }
+
+        const count = extractNearestValue(5624)
+        // countdownM1(count)
+        // countdownM2(count)
+        countdownM3(count)
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
