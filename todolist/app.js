@@ -27,7 +27,7 @@ class TodoList {
             const t = new TodoListItem(todo)
             t.appendTo(this._lstGrp)
         }
-        console.log(e)
+        // console.log(e)
         e.querySelector('form').addEventListener('submit', e => this._onSubmit(e))
         e.querySelectorAll('.btn-group button').forEach(button => {
             button.addEventListener('click', e => this._toggleFilter(e))
@@ -45,15 +45,15 @@ class TodoList {
         e.currentTarget.classList.add('active')
 
         if (filter === 'todo') {
-            console.log("=> Todo")
+            // console.log("=> Todo")
             this._lstGrp.classList.add('hide-completed')
             this._lstGrp.classList.remove('hide-todo')
         } else if (filter === 'done') {
-            console.log("=> done")
+            // console.log("=> Done")
             this._lstGrp.classList.remove('hide-completed')
             this._lstGrp.classList.add('hide-todo')
         } else {
-            console.log("=> other")
+            // console.log("=> Other")
             this._lstGrp.classList.remove('hide-completed')
             this._lstGrp.classList.remove('hide-todo')
         }
@@ -80,9 +80,11 @@ class TodoList {
 
 class TodoListItem {
 
+    _todo
     _element
 
     constructor(todo) {
+        this._todo = todo
         const todoId = todo.id
 
         const li = createElement('li', {
@@ -111,8 +113,12 @@ class TodoListItem {
         li.append(button)
 
         button.addEventListener('click', e => this.remove(e))
-
         checkBox.addEventListener('change', e=> this.toggle(e.currentTarget))
+        li.addEventListener('delete', e => {
+            // console.log(e.currentTarget)
+            // console.log(e.detail)
+            document.body.prepend(createAlertElement('"'+e.detail.title+'" is removed!'))
+        })
 
         this._element = li
     }
@@ -128,6 +134,11 @@ class TodoListItem {
      */
     remove(e) {
         e.preventDefault()
+        this._element.dispatchEvent(
+            new CustomEvent('delete', {
+                detail: this._todo
+            })
+        )
         this._element.remove(e)
     }
 
