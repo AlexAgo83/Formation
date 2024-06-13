@@ -1,17 +1,5 @@
-import { createElement, createAlertElement, createSuccessElement } from "./dom.js"
-
-const settings = {
-    url_todoList: 'https://jsonplaceholder.typicode.com/todos',
-    url_comments: 'https://jsonplaceholder.typicode.com/comments',
-    fetchLimit_todoList: 10,
-    fetchLimit_commentList: 50,
-    lsdb_TodoList: 'tododbs',
-    lsdb_Comments: 'commentdbs',
-    cookies: {
-        nohttp: 'nohttp',
-        testhttp: "testhttp"
-    }
-}
+import { createElement, createAlertElement, createSuccessElement } from "../dom.js"
+import { settings, fetchJSON_toModels } from "../tools.js"
 
 /**
  * @param {string} name 
@@ -22,10 +10,12 @@ function getCookie(name) {
     const value = cookies
         .find(c => c.startsWith(name))
         ?.split("=")[1]
+
     if (value === undefined) {
         console.log(name + " is not registered as a Cookie")
         return null
     }
+
     return decodeURIComponent(value)
 }
 
@@ -78,7 +68,7 @@ class TodoList {
     }
 
     save() {
-        localStorage.setItem(settings.lsdb_TodoList, JSON.stringify(this._todosBulk))
+        localStorage.setItem(settings.localStorage.todos, JSON.stringify(this._todosBulk))
     }
 
     /**
@@ -240,134 +230,19 @@ class TodoListItem {
 }
 
 /**
- * Fetch data from URL with options
- * @param {string} url
- * @returns {JSON}
- */
-async function fetchJSON(url, options={}) {
-    const headers = {
-        Accept: 'application/json', 
-        ...options.headers
-    }
-    const r = await fetch(url, {...options, headers})
-    if (r.ok) {
-        return r.json()
-    }
-    throw new Error('Error server', {cause:r})
-}
-
-function initView() {
-    const tpl = document.getElementById('template-layout')
-    document.querySelector('#todolist').append(tpl.content.cloneNode(true))
-
-    const btnReset = document.getElementById('btn-reset')
-    btnReset.addEventListener('click', e => {
-        localStorage.clear()
-        location.reload()
-    })
-    const observerBtn = new IntersectionObserver((entries) => {
-        for (const e of entries) {
-            // Add opacity animation to btnReset (when intersecting)
-            if (e.target === btnReset && e.isIntersecting) {
-                btnReset.animate([
-                    {opacity: 0},
-                    {opacity: 1}
-                ], {
-                    duration: 1000,
-                    threshold: 1
-                })
-                observerBtn.unobserve(btnReset)
-            }
-        }
-    })
-    observerBtn.observe(btnReset)
-
-    const listBtnSection = document.querySelectorAll('nav-link')
-    const y = Math.round(window.innerHeight * .75)
-    const limits = {
-        rootMargin: `-${window.innerHeight - y - 1}px 0px -${y}px 0px`
-    }
-    const observerSection = new IntersectionObserver((entries) => {
-        for (const e of entries) {
-            if (e.isIntersecting) {
-                const anchor = document.querySelector(`a[href="#${e.target.id}"]`)
-                if (anchor !== null) {
-                    anchor.parentElement
-                        .querySelectorAll('.active-section')
-                        .forEach(node => node.classList.remove('active-section'))
-                    anchor.classList.add('active-section')
-                }
-            }
-        }
-    }, limits)
-    
-    document.querySelectorAll('.custom-section')?.forEach((section) => {
-        observerSection.observe(section)
-    })
-}
-
-/**
  * Fetch todoList from Jsonplaceholder
  */
-async function fetchJSON_TodoList() {
-    const sectionTodoList = document.querySelector('#todolist')
-    let strLimit = ""
-    if (settings.fetchLimit_todoList > 0) 
-        strLimit = "?_limit=" + settings.fetchLimit_todoList
-
-    try {
-        let tdList = []
-        const dbList = localStorage.getItem(settings.lsdb_TodoList)?.toString()
-
-        if (dbList)
-            tdList = JSON.parse(dbList)
-        else {
-            console.log('First load !')
-            tdList = await fetchJSON(settings.url_todoList + strLimit)
+export async function fetchJSON_TodoList() {
+    const sectionTodos = document.querySelector('#todolist')
+    fetchJSON_toModels(settings.url.todos, settings.fetchLimit.todos, settings.localStorage.todos, 
+        // onLoad
+        (objectList) => {
+            const todos = new TodoList(objectList)
+            todos.appendTo(sectionTodos)
+        },
+        // onError
+        (error) => {
+            sectionTodos.prepend(createAlertElement('Impossible de charger la todoList'))
         }
-
-        const todos = new TodoList(tdList)
-        todos.appendTo(sectionTodoList)
-    } catch (e) {
-        console.log(e)
-        sectionTodoList.prepend(createAlertElement('Impossible de charger la todoList'))
-        console.error(e)
-    }
+    )
 }
-
-async function fetchJSON_Comments() {
-    const sectionComments = document.querySelector('#coms')
-    let strLimit = ""
-    if (settings.fetchLimit_todoList > 0) 
-        strLimit = "?_limit=" + settings.fetchLimit_commentList
-
-    try {
-        let commentList = []
-        const dbList = localStorage.getItem(settings.lsdb_Comments)?.toString()
-
-        if (dbList)
-            commentList = JSON.parse(dbList)
-        else {
-            console.log('First load !')
-            commentList = await fetchJSON(settings.url_comments + strLimit)
-        }
-
-        // const todos = new TodoList(tdList)
-        // todos.appendTo(sectionTodoList)
-    } catch (e) {
-        console.log(e)
-        sectionTodoList.prepend(createAlertElement('Impossible de charger les commentaires'))
-        console.error(e)
-    }
-}
-
-/**** TEST COOKIES */
-// if (getCookie(settings.cookies.testhttp) === null) {
-//   setCookie(settings.cookies.testhttp, "testX", 5)
-// }
-// console.log(getCookie(settings.cookies.testhttp))
-
-/**** MAIN */
-initView()
-fetchJSON_TodoList()
-fetchJSON_Comments()
