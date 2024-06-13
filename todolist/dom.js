@@ -26,3 +26,17 @@ export function createAlertElement(alertMsg) {
     alertElement.innerText = alertMsg
     return alertElement
 }
+
+/**
+ * 
+ * @param {string} successMsg 
+ * @returns {HTMLElement}
+ */
+export function createSuccessElement(successMsg) {
+    const successElement = createElement('div', {
+        class: 'alert alert-success m-2',
+        role: 'alert'
+    })
+    successElement.innerText = successMsg
+    return successElement
+}

@@ -1,8 +1,9 @@
-import { createElement, createAlertElement } from "./dom.js"
+import { createElement, createAlertElement, createSuccessElement } from "./dom.js"
 
 const settings = {
     url_todoList: 'https://jsonplaceholder.typicode.com/todos',
-    fetchLimit: 10
+    fetchLimit: 10,
+    localStorageDB: 'tododbs'
 }
 
 class TodoList {
@@ -15,6 +16,7 @@ class TodoList {
 
     constructor(todos) {
         this._todosBulk = todos
+        this.save()
     }
 
     /**
@@ -27,11 +29,18 @@ class TodoList {
             const t = new TodoListItem(todo)
             t.appendTo(this._lstGrp)
         }
-        // console.log(e)
+        
         e.querySelector('form').addEventListener('submit', e => this._onSubmit(e))
         e.querySelectorAll('.btn-group button').forEach(button => {
             button.addEventListener('click', e => this._toggleFilter(e))
         });
+
+        this._lstGrp.addEventListener('delete-item', e => this._onRemove(e))
+        this._lstGrp.addEventListener('update-item', e => this._onUpdate(e))
+    }
+
+    save() {
+        localStorage.setItem(settings.localStorageDB, JSON.stringify(this._todosBulk))
     }
 
     /**
@@ -59,21 +68,45 @@ class TodoList {
         }
     }
 
+    _onRemove(e) {
+        const index = this._todosBulk.indexOf(e.detail)
+        if (index > -1) {
+            this._todosBulk.splice(index, 1)
+            this.save()
+            document.body.prepend(createSuccessElement('"'+e.detail.title+'" is removed!'))
+        }
+    }
+
+    _onUpdate(e) {
+        const index = this._todosBulk.indexOf(e.detail)
+        if (index > -1) {
+            this._todosBulk[index] = e.detail
+            this.save()
+            document.body.prepend(createSuccessElement('"'+e.detail.title+'" is updated!'))
+        }
+    }
+
     _onSubmit(e) {
         e.preventDefault()
         const form = e.currentTarget
         const title = new FormData(e.currentTarget).get('title').toString().trim()
-        if (title === '')
+        if (title === '') {
             return
-        else {
+        } else {
+            // --> Model
             const todo = {
                 id: Date.now(),
                 title,
                 completed: false
             }
+            this._todosBulk.unshift(todo)
+            this.save()
+
+            // <-- View
             const t = new TodoListItem(todo)            
             this._lstGrp.prepend(t.getElement())
             form.reset()
+            document.body.prepend(createSuccessElement('"'+todo.title+'" is added!'))
         }
     }
 }
@@ -112,13 +145,8 @@ class TodoListItem {
         li.append(label)
         li.append(button)
 
-        button.addEventListener('click', e => this.remove(e))
-        checkBox.addEventListener('change', e=> this.toggle(e.currentTarget))
-        li.addEventListener('delete', e => {
-            // console.log(e.currentTarget)
-            // console.log(e.detail)
-            document.body.prepend(createAlertElement('"'+e.detail.title+'" is removed!'))
-        })
+        button.addEventListener('click', e => this._remove(e))
+        checkBox.addEventListener('change', e=> this._toggle(e.currentTarget))
 
         this._element = li
     }
@@ -132,25 +160,35 @@ class TodoListItem {
      * 
      * @param {PointerEvent} e 
      */
-    remove(e) {
+    _remove(e) {
         e.preventDefault()
         this._element.dispatchEvent(
-            new CustomEvent('delete', {
-                detail: this._todo
+            new CustomEvent('delete-item', {
+                detail: this._todo,
+                bubbles: true
             })
         )
         this._element.remove(e)
+        
     }
 
     /**
      * 
      * @param {HTMLInputElement} e 
      */
-    toggle(cb) {
-        if (cb.checked)
+    _toggle(cb) {
+        if (cb.checked) 
             this.getElement().classList.add('is-completed')
         else 
             this.getElement().classList.remove('is-completed')
+        this._todo.completed = cb.checked
+
+        this._element.dispatchEvent(
+            new CustomEvent('update-item', {
+                detail: this._todo,
+                bubbles: true
+            })
+        )
     }
 
     /**
@@ -165,9 +203,14 @@ class TodoListItem {
 
 /**
  * Fetch data from URL with options
+ * @param {string} url
+ * @returns {JSON}
  */
 async function fetchJSON(url, options={}) {
-    const headers = {Accept: 'application/json', ...options.headers}
+    const headers = {
+        Accept: 'application/json', 
+        ...options.headers
+    }
     const r = await fetch(url, {...options, headers})
     if (r.ok) {
         return r.json()
@@ -175,15 +218,31 @@ async function fetchJSON(url, options={}) {
     throw new Error('Error server', {cause:r})
 }
 
+function initView() {
+    const tpl = document.getElementById('template-layout')
+    document.querySelector('#todolist').append(tpl.content.cloneNode(true))
+}
+
 /**
  * Fetch todoList from Jsonplaceholder
  */
 async function fetchJSON_TodoList() {
     let strLimit = ""
-    if (settings.fetchLimit > 0) strLimit = "?_limit=" + settings.fetchLimit
+    if (settings.fetchLimit > 0) 
+        strLimit = "?_limit=" + settings.fetchLimit
+
     try {
-        const todoList = await fetchJSON(settings.url_todoList + strLimit)
-        const todos = new TodoList(todoList)
+        let tdList = []
+        const dbList = localStorage.getItem(settings.localStorageDB)?.toString()
+
+        if (dbList)
+            tdList = JSON.parse(dbList)
+        else {
+            console.log('First load !')
+            tdList = await fetchJSON(settings.url_todoList + strLimit)
+        }
+
+        const todos = new TodoList(tdList)
         todos.appendTo(document.querySelector('#todolist'))
     } catch (e) {
         console.log(e)
@@ -192,4 +251,5 @@ async function fetchJSON_TodoList() {
     }
 }
 
+initView()
 fetchJSON_TodoList()
