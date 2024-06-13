@@ -20,7 +20,7 @@ export function createElement(tagName, attributes) {
  */
 export function createAlertElement(alertMsg) {
     const alertElement = createElement('div', {
-        class: 'alert alert-danger m-2',
+        class: 'alert alert-danger m-2 alert-dismissible fade show alertbox',
         role: 'alert'
     })
     alertElement.innerText = alertMsg
@@ -34,7 +34,7 @@ export function createAlertElement(alertMsg) {
  */
 export function createSuccessElement(successMsg) {
     const successElement = createElement('div', {
-        class: 'alert alert-success m-2',
+        class: 'alert alert-success m-2 alert-dismissible fade show',
         role: 'alert'
     })
     successElement.innerText = successMsg

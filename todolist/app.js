@@ -108,7 +108,7 @@ class TodoList {
         if (index > -1) {
             this._todosBulk.splice(index, 1)
             this.save()
-            document.body.prepend(createSuccessElement('"'+e.detail.title+'" is removed!'))
+            document.querySelector('#todolist').prepend(createSuccessElement('"'+e.detail.title+'" is removed!'))
         }
     }
 
@@ -117,7 +117,7 @@ class TodoList {
         if (index > -1) {
             this._todosBulk[index] = e.detail
             this.save()
-            document.body.prepend(createSuccessElement('"'+e.detail.title+'" is updated!'))
+            document.querySelector('#todolist').prepend(createSuccessElement('"'+e.detail.title+'" is updated!'))
         }
     }
 
@@ -141,7 +141,7 @@ class TodoList {
             const t = new TodoListItem(todo)            
             this._lstGrp.prepend(t.getElement())
             form.reset()
-            document.body.prepend(createSuccessElement('"'+todo.title+'" is added!'))
+            document.querySelector('#todolist').prepend(createSuccessElement('"'+todo.title+'" is added!'))
         }
     }
 }
@@ -326,7 +326,7 @@ async function fetchJSON_TodoList() {
         todos.appendTo(document.querySelector('#todolist'))
     } catch (e) {
         console.log(e)
-        document.body.prepend(createAlertElement('Impossible de charger la todoList'))
+        document.querySelector('#todolist').prepend(createAlertElement('Impossible de charger la todoList'))
         console.error(e)
     }
 }
