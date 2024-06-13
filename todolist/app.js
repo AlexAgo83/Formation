@@ -256,6 +256,12 @@ async function fetchJSON(url, options={}) {
 function initView() {
     const tpl = document.getElementById('template-layout')
     document.querySelector('#todolist').append(tpl.content.cloneNode(true))
+
+    document.getElementById('btn-reset').addEventListener('click', e => {
+        localStorage.clear()
+        location.reload()
+        // document.body.prepend(createSuccessElement('Reset done !'))
+    })
 }
 
 /**
