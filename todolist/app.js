@@ -2,8 +2,11 @@ import { createElement, createAlertElement, createSuccessElement } from "./dom.j
 
 const settings = {
     url_todoList: 'https://jsonplaceholder.typicode.com/todos',
-    fetchLimit: 10,
-    localStorageDB: 'tododbs',
+    url_comments: 'https://jsonplaceholder.typicode.com/comments',
+    fetchLimit_todoList: 10,
+    fetchLimit_commentList: 50,
+    lsdb_TodoList: 'tododbs',
+    lsdb_Comments: 'commentdbs',
     cookies: {
         nohttp: 'nohttp',
         testhttp: "testhttp"
@@ -75,7 +78,7 @@ class TodoList {
     }
 
     save() {
-        localStorage.setItem(settings.localStorageDB, JSON.stringify(this._todosBulk))
+        localStorage.setItem(settings.lsdb_TodoList, JSON.stringify(this._todosBulk))
     }
 
     /**
@@ -307,13 +310,14 @@ function initView() {
  * Fetch todoList from Jsonplaceholder
  */
 async function fetchJSON_TodoList() {
+    const sectionTodoList = document.querySelector('#todolist')
     let strLimit = ""
-    if (settings.fetchLimit > 0) 
-        strLimit = "?_limit=" + settings.fetchLimit
+    if (settings.fetchLimit_todoList > 0) 
+        strLimit = "?_limit=" + settings.fetchLimit_todoList
 
     try {
         let tdList = []
-        const dbList = localStorage.getItem(settings.localStorageDB)?.toString()
+        const dbList = localStorage.getItem(settings.lsdb_TodoList)?.toString()
 
         if (dbList)
             tdList = JSON.parse(dbList)
@@ -323,10 +327,36 @@ async function fetchJSON_TodoList() {
         }
 
         const todos = new TodoList(tdList)
-        todos.appendTo(document.querySelector('#todolist'))
+        todos.appendTo(sectionTodoList)
     } catch (e) {
         console.log(e)
-        document.querySelector('#todolist').prepend(createAlertElement('Impossible de charger la todoList'))
+        sectionTodoList.prepend(createAlertElement('Impossible de charger la todoList'))
+        console.error(e)
+    }
+}
+
+async function fetchJSON_Comments() {
+    const sectionComments = document.querySelector('#coms')
+    let strLimit = ""
+    if (settings.fetchLimit_todoList > 0) 
+        strLimit = "?_limit=" + settings.fetchLimit_commentList
+
+    try {
+        let commentList = []
+        const dbList = localStorage.getItem(settings.lsdb_Comments)?.toString()
+
+        if (dbList)
+            commentList = JSON.parse(dbList)
+        else {
+            console.log('First load !')
+            commentList = await fetchJSON(settings.url_comments + strLimit)
+        }
+
+        // const todos = new TodoList(tdList)
+        // todos.appendTo(sectionTodoList)
+    } catch (e) {
+        console.log(e)
+        sectionTodoList.prepend(createAlertElement('Impossible de charger les commentaires'))
         console.error(e)
     }
 }
@@ -340,3 +370,4 @@ async function fetchJSON_TodoList() {
 /**** MAIN */
 initView()
 fetchJSON_TodoList()
+fetchJSON_Comments()

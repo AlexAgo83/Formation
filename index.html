@@ -48,7 +48,7 @@
     <div class="container">
         <nav class="navbar fixed-top bg-light">
             <a class="nav-link" href="#todolist">TodoList</a>
-            <a class="nav-link" href="#comments">Comments</a>
+            <a class="nav-link" href="#coms">Comments</a>
             <a class="nav-link" href="#section3">Section 3</a>
             <a class="nav-link" href="#section4">Section 4</a>
         </nav>
@@ -58,9 +58,18 @@
         <section id="todolist" class="container pt-5 custom-section" data-spy>
             <h1>TodoList</h1>
         </section>
-        <section id="comments" class="container pt-5 custom-section" data-spy>
+        <section id="coms" class="container pt-5 custom-section" data-spy>
             <h1>Comments</h1>
-            <
+            <div class="comments"></div>
+            <template id="comment">
+                <article class="mb-4">
+                    <div class="mb-1"><strong class="js-username"></strong></div>
+                    <p class="js-content"></p>
+                </article>
+            </template>
+            <div class="text-center js-infinite-pagination">
+                <div class="spinner-border" role="status"></div>
+            </div>
         </section>
         <section id="section3" class="container pt-5 custom-section" data-spy>Section 3</section>
         <section id="section4" class="container pt-5 custom-section" data-spy>Section 4</section>
