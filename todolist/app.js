@@ -257,11 +257,27 @@ function initView() {
     const tpl = document.getElementById('template-layout')
     document.querySelector('#todolist').append(tpl.content.cloneNode(true))
 
-    document.getElementById('btn-reset').addEventListener('click', e => {
+    const btnReset = document.getElementById('btn-reset')
+    btnReset.addEventListener('click', e => {
         localStorage.clear()
         location.reload()
-        // document.body.prepend(createSuccessElement('Reset done !'))
     })
+    const observer = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+            // Add opacity animation to btnReset (when intersecting)
+            if (e.target === btnReset && e.isIntersecting) {
+                btnReset.animate([
+                    {opacity: 0},
+                    {opacity: 1}
+                ], {
+                    duration: 1000,
+                    threshold: 1
+                })
+                observer.unobserve(btnReset)
+            }
+        }
+    })
+    observer.observe(btnReset)
 }
 
 /**
