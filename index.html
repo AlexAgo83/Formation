@@ -11,33 +11,50 @@
         .hide-todo .todo:not(.is-completed) {
             display: none!important;
         }
+        .custom-section {
+            min-height: 1000px;
+        }
+        .active-section {
+            color: red;
+        }
     </style>
 </head>
 <body>
-
     <template id="template-layout">
         <!-- Prompt -->
         <form class="d-flex pb-4">
             <input required="" class="form-control" type="text" placeholder="Acheter des patates..." name="title" data-com.bitwarden.browser.user-edited="yes">
             <button class="btn btn-primary">Ajouter</button>
         </form>
-        <main>
-            <!-- Selector -->
-            <div class="btn-group mb-4" role="group">
-                <button type="button" class=" btn btn-outline-primary active" data-filter="all">Toutes</button>
-                <button type="button" class=" btn btn-outline-primary" data-filter="todo">A faire</button>
-                <button type="button" class=" btn btn-outline-primary" data-filter="done">Faites</button>
-            </div>
+        
+        <!-- Selector -->
+        <div class="btn-group mb-4" role="group">
+            <button type="button" class=" btn btn-outline-primary active" data-filter="all">Toutes</button>
+            <button type="button" class=" btn btn-outline-primary" data-filter="todo">A faire</button>
+            <button type="button" class=" btn btn-outline-primary" data-filter="done">Faites</button>
+        </div>
 
-            <!-- RENDER list -->
-            <ul class="list-group"></ul>
-            <br>
-            <button id="btn-reset" type="button" class="btn btn-primary">Reset</button>
-            <br>
-        </main>
+        <!-- RENDER list -->
+        <ul class="list-group"></ul>
+        <br>
+        <button id="btn-reset" type="button" class="btn btn-primary">Reset</button>
+        <br>
     </template>
 
-    <section class="container pt-5" id="todolist"></section>
+    <div class="container">
+        <nav class="navbar fixed-top  navbar-expand-lg navbar-light bg-light">
+            <a class="nav-link" href="#todolist">TodoList</a>
+            <a class="nav-link" href="#section2">Section 2</a>
+            <a class="nav-link" href="#section3">Section 3</a>
+            <a class="nav-link" href="#section4">Section 4</a>
+        </nav>
+    </div>
 
+    <main>
+        <section id="todolist" class="container pt-5 custom-section" data-spy></section>
+        <section id="section2" class="container pt-5 custom-section" data-spy>Section 2</section>
+        <section id="section3" class="container pt-5 custom-section" data-spy>Section 3</section>
+        <section id="section4" class="container pt-5 custom-section" data-spy>Section 4</section>
+    </main>
 </body>
 </html>

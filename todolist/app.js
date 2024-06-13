@@ -262,7 +262,7 @@ function initView() {
         localStorage.clear()
         location.reload()
     })
-    const observer = new IntersectionObserver((entries) => {
+    const observerBtn = new IntersectionObserver((entries) => {
         for (const e of entries) {
             // Add opacity animation to btnReset (when intersecting)
             if (e.target === btnReset && e.isIntersecting) {
@@ -273,11 +273,34 @@ function initView() {
                     duration: 1000,
                     threshold: 1
                 })
-                observer.unobserve(btnReset)
+                observerBtn.unobserve(btnReset)
             }
         }
     })
-    observer.observe(btnReset)
+    observerBtn.observe(btnReset)
+
+    const listBtnSection = document.querySelectorAll('nav-link')
+    const y = Math.round(window.innerHeight * .75)
+    const limits = {
+        rootMargin: `-${window.innerHeight - y - 1}px 0px -${y}px 0px`
+    }
+    const observerSection = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+            if (e.isIntersecting) {
+                const anchor = document.querySelector(`a[href="#${e.target.id}"]`)
+                if (anchor !== null) {
+                    anchor.parentElement
+                        .querySelectorAll('.active-section')
+                        .forEach(node => node.classList.remove('active-section'))
+                    anchor.classList.add('active-section')
+                }
+            }
+        }
+    }, limits)
+    
+    document.querySelectorAll('.custom-section')?.forEach((section) => {
+        observerSection.observe(section)
+    })
 }
 
 /**
