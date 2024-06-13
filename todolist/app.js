@@ -3,7 +3,42 @@ import { createElement, createAlertElement, createSuccessElement } from "./dom.j
 const settings = {
     url_todoList: 'https://jsonplaceholder.typicode.com/todos',
     fetchLimit: 10,
-    localStorageDB: 'tododbs'
+    localStorageDB: 'tododbs',
+    cookies: {
+        nohttp: 'nohttp',
+        testhttp: "testhttp"
+    }
+}
+
+/**
+ * @param {string} name 
+ * @returns {string}
+ */
+function getCookie(name) {
+    const cookies = document.cookie.split("; ")
+    const value = cookies
+        .find(c => c.startsWith(name))
+        ?.split("=")[1]
+    if (value === undefined) {
+        console.log(name + " is not registered as a Cookie")
+        return null
+    }
+    return decodeURIComponent(value)
+}
+
+/**
+ * @param {string} name
+ * @param {string} value
+ * @param {number} days
+ */
+function setCookie(name, value, days) {
+    const date = new Date()
+    date.setDate(date.getDate() + days)
+    document.cookie = `${name}=${encodeURIComponent(value)}; expire=${date.toUTCString()};`
+}
+
+function clearCookie() {
+    document.cookie = ""
 }
 
 class TodoList {
@@ -251,5 +286,12 @@ async function fetchJSON_TodoList() {
     }
 }
 
+/**** TEST COOKIES */
+// if (getCookie(settings.cookies.testhttp) === null) {
+//   setCookie(settings.cookies.testhttp, "testX", 5)
+// }
+// console.log(getCookie(settings.cookies.testhttp))
+
+/**** MAIN */
 initView()
 fetchJSON_TodoList()
