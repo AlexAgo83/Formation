@@ -11,5 +11,16 @@
     <% } %>
 <% } %>
 </ul>
+</br>
+<ul>
+<% if (locals.element3) { %>
+    <% for (const t of element3) { %>
+        <li><%= t.content%></li>
+    <% } %>
+<% } %>
+<% if (locals.element4) { %>
+    <h1>Post : <%= element4.content %></h1>
+<% } %>
+</ul>
 
 <%- include("./shared/footer.ejs") %>
