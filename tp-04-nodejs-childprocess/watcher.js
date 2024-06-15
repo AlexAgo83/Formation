@@ -5,7 +5,8 @@ const [node, _, file] = process.argv
 // exec('dazdza', (error, out, err) => {
 //     console.log({
 //         error,
-//         out,err
+//         out,
+//         err
 //     })
 // })
 
