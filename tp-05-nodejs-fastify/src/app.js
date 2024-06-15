@@ -11,5 +11,3 @@ fastify.get('/', (request, reply) => {
 fastify.listen({port: 3000}, (err, adress) => {
     if (err) throw err
 })
-
-// ======> npm run dev
