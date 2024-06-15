@@ -1,16 +1,27 @@
 import fastify from 'fastify'
 import fastifyView from '@fastify/view'
+import fastifyStatic from '@fastify/static'
+
 import ejs from 'ejs'
+
+import { fileURLToPath } from "node:url"
+import { dirname, join } from "node:path"
 
 // const app = Fastify({
 //     logger: true
 // })
 const app = fastify()
+const _rootDir = dirname(fileURLToPath(import.meta.url))
+const _publicPath = join(_rootDir, '../public')
+console.log(_publicPath)
 
 app.register(fastifyView, {
     engine: {
         ejs
     }
+})
+app.register(fastifyStatic, {
+    root: _publicPath
 })
 
 // fastify.get('/', (request, reply) => {
