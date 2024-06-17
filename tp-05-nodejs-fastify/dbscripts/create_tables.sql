@@ -1,4 +1,4 @@
--- CREATE TABLE
+-- CREATE TABLE posts
 DROP TABLE IF EXISTS posts;
 CREATE TABLE posts (
     post_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -7,7 +7,7 @@ CREATE TABLE posts (
     created_at DATETIME
 );
 
--- INSERT DEFAULT DATA
+-- INSERT DEFAULT DATA INTO posts
 -- Value 1
 INSERT INTO posts (
     title,
@@ -36,5 +36,24 @@ INSERT INTO posts (
 ) VALUES (
     'Titre 3',
     'Bla-bla-bla 003',
+    1718460971
+);
+
+-- CREATE TABLE users
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(150), 
+    password TEXT,
+    created_at DATETIME
+);
+-- Value 1
+INSERT INTO users (
+    username,
+    password,
+    created_at
+) VALUES (
+    'admin',
+    '<...>',
     1718460971
 );

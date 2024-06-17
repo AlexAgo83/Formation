@@ -1,6 +1,7 @@
 import fastify from 'fastify'
 import fastifyView from '@fastify/view'
 import fastifyStatic from '@fastify/static'
+import fastifyFormBody from '@fastify/formbody'
 
 import ejs from 'ejs'
 
@@ -9,6 +10,7 @@ import { dirname, join } from "node:path"
 
 import { getAllPosts, getPostById } from "./database.js"
 import { RecordNotFoundError } from './errors/RecordNotFoundError.js'
+import { loginAction, logoutAction } from './auth.js'
 
 
 // const app = Fastify({
@@ -23,6 +25,7 @@ app.register(fastifyView, {
         ejs
     }
 })
+app.register(fastifyFormBody)
 app.register(fastifyStatic, {
     root: _publicPath
 })
@@ -84,6 +87,10 @@ app.setErrorHandler((error, req, res) => {
         return errorMsg
     }
 })
+
+app.get("/login", loginAction)
+app.post("/login", loginAction)
+app.get("/logout", logoutAction)
 
 // fastify.listen({port: 3000}, (err, adress) => {
 //     if (err) throw err
