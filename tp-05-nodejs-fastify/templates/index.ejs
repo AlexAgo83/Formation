@@ -1,4 +1,4 @@
-<%- include("./shared/header.ejs") %>
+<%- include("./shared/header.ejs", {title: "Test page"}) %>
 
 <% if (locals.element1) { %>
     <h1>Bonjour <%= element1.title %></h1>

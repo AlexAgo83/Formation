@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
 
 import { getAllPosts, getPostById } from "./database.js"
+import { RecordNotFoundError } from './errors/RecordNotFoundError.js'
+
 
 // const app = Fastify({
 //     logger: true
@@ -60,11 +62,26 @@ app.get('/posts', (req, res) => {
 })
 
 app.get('/post/:id', (req, res) => {
-    if (req.params.id !== undefined) {
-        const element4 = getPostById(req.params.id)
-        res.view('templates/index.ejs', {
-            element4
-        })
+    const element4 = getPostById(req.params.id)
+    res.view('templates/index.ejs', {
+        element4
+    })
+})
+
+/**
+ * Error HANDLER
+ */
+app.setErrorHandler((error, req, res) => {
+    const errorMsg = {
+        error: error.message
+    }
+    if (error instanceof RecordNotFoundError) {
+        res.statusCode = 404
+        res.view('templates/404.ejs', errorMsg)
+    } else {
+        res.statusCode = 500
+        console.error(error)
+        return errorMsg
     }
 })
 
