@@ -54,6 +54,6 @@ INSERT INTO users (
     created_at
 ) VALUES (
     'admin',
-    '<...>',
+    '$argon2id$v=19$t=3,m=4096,p=1$b/8FICrGoaaLYc6dqgTrrA$yJ8BKw9VaGc4CQtr+V1yOeK2lHT+VbhJZecOg9tTsrY',
     1718460971
 );
