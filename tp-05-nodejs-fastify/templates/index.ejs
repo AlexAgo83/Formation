@@ -1,5 +1,14 @@
 <%- include("./shared/header.ejs", {title: "Test page"}) %>
 
+<% if (locals.user) { %>
+    <div class="alert alert-info">
+        Connected, <a href="/logout">log out?</a>
+    </div>
+<% } else { %>
+    <div class="alert alert-warning">
+        Not connected, <a href="/login">log in?</a>
+    </div>
+<% } %>
 <% if (locals.element1) { %>
     <h1>Bonjour <%= element1.title %></h1>
 <% } %>

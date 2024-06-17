@@ -9,7 +9,11 @@ export const loginAction = async (req, res) => {
         const user = getUser(username)
         if (user !== undefined
             && (await verify(user.password, req.body.password))) {
-            return "Connected"
+            req.sessionCookie.set('user', {
+                id: user.user_id,
+                username: user.username
+            })
+            return res.redirect('/')
         }
         params.error = "Identifiants invalides"
     }
@@ -17,5 +21,7 @@ export const loginAction = async (req, res) => {
 }
 
 export const logoutAction = (req, res) => {
-    return res.view('templates/logout.ejs')
+    // return res.view('templates/logout.ejs')
+    req.sessionCookie.delete()
+    res.redirect('/')
 }
