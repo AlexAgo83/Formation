@@ -25,8 +25,8 @@ function App() {
   }
 
   const [user, setUser] = useState({
-    firstname: '',
-    age: 0,
+    firstname: 'John Doe',
+    age: 21,
     check: false
   })
 
@@ -36,7 +36,7 @@ function App() {
   }
   const resetUser = () => {
     e.preventDefault()
-    setUser({firstname: '', age: 0})
+    setUser({firstname: 'NO NAME', age: 0})
   }
 
   const handleChangeName = (e) => {
@@ -64,24 +64,32 @@ function App() {
 
       <form>
         <p>
-          <input type="text" 
-            name="firstname" 
-            value={user.firstname}
-            onChange={handleChangeName} />
-
-          <input type="text" 
-            name="age" 
-            value={user.age} 
-            onChange={handleChangeAge}/>
-
-          <input type="checkbox" 
-            value={user.check} 
-            onChange={handleChangeCheck}/>
+          <TestName firstname={user.firstname} onChange={handleChangeName}/>
+          <TestAge age={user.age} onChange={handleChangeAge}/> 
+          <TestCheckbox checked={user.check} onCheck={handleChangeCheck}/>
         </p>
         <button onClick={incrementAge}>Increment age</button>     
         <button onClick={resetUser}>Reset</button>   
       </form>
     </>
+}
+
+function TestName ({firstname, onChange}) {
+  return <input type="text" 
+    name="firstName" 
+    value={firstname}
+    onChange={onChange} />
+}
+function TestAge ({age, onChange}) {
+  return <input type="text" 
+    name="age" 
+    value={age} 
+    onChange={onChange}/>
+}
+function TestCheckbox ({checked, onCheck}) {
+  return <input type="checkbox" 
+    checked={checked} 
+    onChange={onCheck}/>
 }
 
 export default App
