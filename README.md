@@ -17,6 +17,7 @@
 - React Basics
 - [TP] Panier de fruit / Rendering dynamique SearchBar / InStock / Price - range
 - React Hook
+- React Memo & useCallback
 
 TODO:
 - Bootstrap / CSS
