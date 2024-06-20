@@ -31,7 +31,7 @@ TODO:
 
 ## Installation
 
-Navigate to the target TP folder and execute the necessary NPM commands based on the project type, follow these steps:
+Navigate to the target tp-{number}-{subject} folder and execute the necessary NPM commands based on the project type, follow these steps:
 
 1. Open your terminal or command prompt.
 2. Change the directory to the target TP folder using the `cd` command. For example, if the TP folder is named "tp-target", you would run:
@@ -69,7 +69,7 @@ Navigate to the target TP folder and execute the necessary NPM commands based on
       ```
       npm run dev
       ```
-      
+
 Remember to replace "tp-target" with the actual name of the TP folder and adjust the commands based on your specific project setup.
 
 ## License
