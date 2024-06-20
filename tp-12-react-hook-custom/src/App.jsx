@@ -3,6 +3,7 @@ import { useDocumentTitle } from "./hooks/useDocumentTitle"
 import { useIncrement } from "./hooks/useIncrement"
 import { useToggle } from "./hooks/useToggle"
 import { Input } from "./components/forms/Input"
+import { useFetch } from "./hooks/useFetch"
 
 function App() {
   const [checked, toggleChecked] = useToggle()
@@ -10,6 +11,9 @@ function App() {
 
   const [name, setName] = useState('')
   useDocumentTitle(name ? `Editer ${name}` : null)
+
+  const {loading, data, errors} = useFetch(
+    'https://jsonplaceholder.typicode.com/posts?_limit=10&_delay=2000')
 
   return <div>
     <div>
@@ -21,6 +25,13 @@ function App() {
       Compteur : {count}
       <button onClick={increment}>+</button>
       <button onClick={decrement}>-</button>
+    </div>
+    <div>
+      {loading && <div>Loading...</div>}
+      {/* {data && <div>{JSON.stringify(data)}</div>} */}
+      {data && <div>
+        {data.map(post => (<li key={post.id}>{post.title}</li>))}
+        </div>}
     </div>
   </div>
 }
