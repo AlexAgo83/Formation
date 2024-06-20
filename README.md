@@ -6,16 +6,16 @@
 
 - Javascript Basics
 - Javascript Promise
-- TP - TodoList
+- [TP] TodoList
 - Node.js Basics
 - Node.js FileSystem
 - Node.js Server / ChildProcess
 - Node.js Fastify
-- TP: TodoList avec Bdd (Persistance) et Fastify (static / cookies / session)
+- [TP] TodoList avec Bdd (Persistance) et Fastify (static / cookies / session)
 - Typescript Basics
 - Vite 'Build tool'
 - React Basics
-- TP: Panier de fruit / Rendering dynamique SearchBar / InStock / Price - range
+- [TP] Panier de fruit / Rendering dynamique SearchBar / InStock / Price - range
 - React Hook
 
 TODO:
