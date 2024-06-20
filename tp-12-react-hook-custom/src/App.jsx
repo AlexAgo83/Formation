@@ -28,7 +28,7 @@ function App() {
     </div>
     <div>
       {loading && <div>Loading...</div>}
-      {errors && <div>Error: {errors.message}</div>}
+      {errors && <div className="alert alert-danger">Error: {errors.message}</div>}
       {data && <div>
         {data.map(post => (<li key={post.id}>{post.title}</li>))}
         </div>}
