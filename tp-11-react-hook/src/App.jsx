@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Input } from "./components/forms/Input"
 import { Checkbox } from "./components/forms/Checkbox"
 
@@ -11,6 +11,7 @@ function App() {
     setSecondsLeft(x)
   }
 
+  // TEST USE EFFECT
   useEffect(() => {
     const timer = setInterval(() => {
       setSecondsLeft(x => {
@@ -28,6 +29,20 @@ function App() {
 
   const [showInput, setShowInput] = useState(false)
 
+  // TEST USE REF
+  const prefixRef = useRef(null)
+  const [prefix, setPrefix] = useState("")
+  prefixRef.current = prefix
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      console.log(prefixRef.current)
+    }, 1000)
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
+
   return <div className="container my-5">
       <label>Duration :</label>
       <Input 
@@ -42,6 +57,10 @@ function App() {
         label="Show Title input"
       />
       {showInput && <EditTitle />}
+      <p>
+        <Input label="prefix" value={prefix} onChange={setPrefix} />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus beatae itaque ea laudantium dolorem earum, optio vero dolorum aut laboriosam fugit quo repellat nesciunt fuga sapiente esse maiores qui molestias?
+      </p>
       <div style={{height: "300vh"}}></div>
     </div>
 }
