@@ -49,6 +49,12 @@ Navigate to the target TP folder and execute the necessary NPM commands based on
     npm install --save-dev typescript
     ```
 
+    If it is a Vite/React project, run the following command instead:
+    ```
+    npm init vite@latest
+    npm install
+    ```
+
 4. After the dependencies are installed, you can proceed with running the project. Use the appropriate NPM command based on the project type:
     - For JavaScript projects:
       ```
@@ -59,7 +65,11 @@ Navigate to the target TP folder and execute the necessary NPM commands based on
       ```
       npm run start:ts
       ```
-
+    - For Vite/React projects:
+      ```
+      npm run dev
+      ```
+      
 Remember to replace "tp-target" with the actual name of the TP folder and adjust the commands based on your specific project setup.
 
 ## License
