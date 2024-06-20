@@ -24,21 +24,42 @@ TODO:
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
 
 Instructions on how to install and set up the project.
 
-## Usage
+Navigate to the target TP folder and execute the necessary NPM commands based on the project type, follow these steps:
 
-Instructions on how to use the project and any relevant examples.
+1. Open your terminal or command prompt.
+2. Change the directory to the target TP folder using the `cd` command. For example, if the TP folder is named "tp-target", you would run:
+    ```
+    cd tp-target
+    ```
 
-## Contributing
+3. Once you are inside the TP folder, check the project type. If it is a JavaScript project, run the following command to install the required dependencies:
+    ```
+    npm install
+    ```
 
-Guidelines on how to contribute to the project.
+    If it is a TypeScript project, run the following command instead:
+    ```
+    npm install --save-dev typescript
+    ```
+
+4. After the dependencies are installed, you can proceed with running the project. Use the appropriate NPM command based on the project type:
+    - For JavaScript projects:
+      ```
+      npm start
+      ```
+
+    - For TypeScript projects:
+      ```
+      npm run start:ts
+      ```
+
+Remember to replace "tp-target" with the actual name of the TP folder and adjust the commands based on your specific project setup.
 
 ## License
 
