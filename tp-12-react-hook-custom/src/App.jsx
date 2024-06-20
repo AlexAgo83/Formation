@@ -28,7 +28,7 @@ function App() {
     </div>
     <div>
       {loading && <div>Loading...</div>}
-      {/* {data && <div>{JSON.stringify(data)}</div>} */}
+      {errors && <div>Error: {errors.message}</div>}
       {data && <div>
         {data.map(post => (<li key={post.id}>{post.title}</li>))}
         </div>}
