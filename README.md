@@ -4,22 +4,38 @@
 
 ## Description
 
-- Javascript Basics
-- Javascript Promise
-- [TP] TodoList
-- Node.js Basics
-- Node.js FileSystem
-- Node.js Server / ChildProcess
-- Node.js Fastify
-- [TP] TodoList avec Bdd (Persistance) et Fastify (static / cookies / session)
-- Typescript Basics
-- Vite 'Build tool'
-- React Basics
-- [TP] Panier de fruit / Rendering dynamique SearchBar / InStock / Price - range
-- React Hook
-- React Memo & useCallback
-- React Portal
-- React ErrorBoundary
+- Javascript 
+  ```
+  tp-00-basics 
+  tp-00-promise ()
+  tp-01-todolist-comments ([TP] TodoList items)
+  ```
+- Node.js
+  ```
+  tp-02-nodejs-fs (FileSystem)
+  tp-03-nodejs-srv (Server)
+  tp-04-nodejs-
+  tp-05-nodejs-fastify ([TP] Fastify, SQLite, Cookies & Session)
+  ```
+- Typescript
+  ```
+  tp-06-typescript (Basics)
+  ```
+- Vite 
+  ```
+  tp-07-vite-vanilla-js (Basics)
+  tp-08-vite-react-dummy (Setup React with Vite)
+  ```
+- React
+  ```
+  tp-09-react (Basics)
+  tp-10-react-fruits ([TP] Dynamique rendering / SearchBar, range, Stock & Price)
+  tp-11-react-hook (useState useRef useEffect)
+  tp-12-react-hook-custom (Custom hook)
+  tp-13-react-memo-callback (useCallback)
+  tp-14-react-portal (createPortal)
+  tp-15-react-errors (ErrorBoundary)
+  ```
 
 TODO:
 - Bootstrap / CSS
