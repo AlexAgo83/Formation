@@ -18,6 +18,7 @@
 - [TP] Panier de fruit / Rendering dynamique SearchBar / InStock / Price - range
 - React Hook
 - React Memo & useCallback
+- React Portal
 
 TODO:
 - Bootstrap / CSS
@@ -28,8 +29,6 @@ TODO:
 - [License](#license)
 
 ## Installation
-
-Instructions on how to install and set up the project.
 
 Navigate to the target TP folder and execute the necessary NPM commands based on the project type, follow these steps:
 
