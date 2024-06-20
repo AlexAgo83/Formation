@@ -19,6 +19,7 @@
 - React Hook
 - React Memo & useCallback
 - React Portal
+- React ErrorBoundary
 
 TODO:
 - Bootstrap / CSS
