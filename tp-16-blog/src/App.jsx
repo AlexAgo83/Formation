@@ -4,6 +4,8 @@ import { Home } from "./pages/Home"
 import { Single } from "./pages/Single"
 import { Contact } from "./pages/Contact"
 import { NotFound } from "./pages/NotFound"
+import { ErrorBoundary } from "react-error-boundary";
+import { Alert } from './components/Alert'
 
 function App() {
   const { page, param } = useHashNavigation();
@@ -12,9 +14,15 @@ function App() {
   return <>
     <Headers page={page} />
     <div className="container my-3">
-      {pageContent}
+      <ErrorBoundary FallbackComponent={PageError}>
+        {pageContent}
+      </ErrorBoundary>
     </div>
   </>
+}
+
+function PageError({error}) {
+  return <Alert type="danger">{error.toString()}</Alert>
 }
 
 function getPageContent(page, param) {
