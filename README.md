@@ -36,13 +36,14 @@
   tp-14-react-portal (createPortal)
   tp-15-react-errors (ErrorBoundary)
   ```
+6. React (TP Blog / WebSite)
+  ```
+  tp-16-blog
+  ```
 
 ## Todo
 
 - React (Advance)
-  ```
-  tp-16-react-lazy (inprogress)
-  ```
 - Bootstrap / CSS
 
 ## Table of Contents
