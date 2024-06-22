@@ -2,7 +2,6 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { useFetch } from '../hooks/useFetch'
 import { Spinner } from '../components/Spinner'
 import { Alert } from '../components/Alert'
-import { Card } from '../components/Card'
 
 export function Single({ postId }) {
     const title = 'My blog'

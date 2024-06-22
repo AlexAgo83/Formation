@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useRefSync } from "./useRefSync"
 
 const emptyObject = {}
 
@@ -10,13 +11,14 @@ export function useFetch (url, options = emptyObject) {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
+    const optionsRef = useRefSync(options)
 
     useEffect(() => {  
         fetch(url, {
-            ...options,
+            ...optionsRef,
             headers: {
                 'Accept': 'application/json; charset=utf-8',
-                ...options?.headers
+                ...optionsRef?.headers
             }
         }).then(r => r.json()).then(data => {
             setData(data)
@@ -25,7 +27,7 @@ export function useFetch (url, options = emptyObject) {
         }).finally(() => {
             setLoading(false)
         })
-    }, [url, options])
+    }, [url, optionsRef])
 
     return {
         loading,
