@@ -32,6 +32,7 @@ export function useFetch (url, options = emptyObject) {
     return {
         loading,
         data,
-        error: error
+        error,
+        setData,
     }
 }
