@@ -26,7 +26,7 @@
   tp-07-vite-vanilla-js (Basics)
   tp-08-vite-react-dummy (Setup React with Vite)
   ```
-5. React (Basics)
+5. React ([1/3] : Basics)
   ```
   tp-09-react (Basics)
   tp-10-react-fruits ([TP] Dynamique rendering / searchBar, range)
@@ -36,14 +36,14 @@
   tp-14-react-portal (createPortal)
   tp-15-react-errors (ErrorBoundary)
   ```
-6. React (TP Blog / WebSite)
+6. React ([2/3] TP Blog / WebSite)
   ```
   tp-16-blog
   ```
 
 ## Todo
 
-- React (Advance)
+- React ([3/3] Advance)
 - Bootstrap / CSS
 
 ## Table of Contents
