@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
 
+const emptyObject = {}
+
 /**
  * @param {string} url 
  * @param {FetchEventInit} options 
  */
-export function useFetch (url, options) {
+export function useFetch (url, options = emptyObject) {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
-    const [errors, setErrors] = useState(null)
+    const [error, setError] = useState(null)
 
     useEffect(() => {  
         fetch(url, {
@@ -19,15 +21,15 @@ export function useFetch (url, options) {
         }).then(r => r.json()).then(data => {
             setData(data)
         }).catch((e) => {
-            setErrors(e)
+            setError(e)
         }).finally(() => {
             setLoading(false)
         })
-    }, [])
+    }, [url, options])
 
     return {
         loading,
         data,
-        errors
+        error: error
     }
 }

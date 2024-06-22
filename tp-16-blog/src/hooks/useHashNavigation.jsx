@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+/**
+ * @returns {Object}  { page: string, param: string }
+ */
 export function useHashNavigation() {
     const [hash, setHash] = useState(location.hash)
 
@@ -11,7 +14,9 @@ export function useHashNavigation() {
         return () => window.removeEventListener('hashchange', handleHashChange)
     }, []);
 
+    const cleanedHash = hash.replace('#', '').toLowerCase()
     return {
-        page: hash.replace('#', '').toLowerCase() || 'home'
+        page: cleanedHash ? cleanedHash.split(':')[0] : 'home',
+        param: cleanedHash ? cleanedHash.split(':')[1] : undefined
     }
 }

@@ -3,29 +3,26 @@ import { Headers } from "./components/header";
 import { Home } from "./pages/Home"
 import { Single } from "./pages/Single"
 import { Contact } from "./pages/Contact"
+import { NotFound } from "./pages/NotFound"
 
 function App() {
-  const { page } = useHashNavigation();
-  const pageContent = getPageContent(page)
+  const { page, param } = useHashNavigation();
+  const pageContent = getPageContent(page, param)
 
   return <>
     <Headers page={page} />
-    <p>Page : {page}</p>
-    <p>
-      <a href="#">Home</a>
-      <a href="#post">Article</a>
-      <a href="#contact">Contact</a>
-    </p>
-    {pageContent}
+    <div className="container my-3">
+      {pageContent}
+    </div>
   </>
 }
 
-function getPageContent(page) {
+function getPageContent(page, param) {
   if (page === 'home') {
     return <Home />
   }
   if (page === 'post') {
-    return <Single />
+    return <Single postId={param}/>
   }
   if (page === 'contact') {
     return <Contact />
