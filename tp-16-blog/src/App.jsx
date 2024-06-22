@@ -1,13 +1,13 @@
 function App() {
-  return <div className="container">
+  const {page} = useHashNavigation()
 
+  return <div className="container">
+    Page : {Page}
+    <p href="#">Home</p>
+    <p href="#post">Article</p>
+    <p href="#contact">Contact</p>
   </div>
 }
 
-function Test() {
-  return <div className="container">
-    
-    </div>
-}
 
 export default App
