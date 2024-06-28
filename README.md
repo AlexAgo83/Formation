@@ -38,7 +38,11 @@
   ```
 6. React ([2/3] TP Blog / WebSite)
   ```
-  tp-16-blog
+  tp-16-react-blog
+  ```
+7. Ruby (Basics)
+  ```
+  tp-17-ruby-basics
   ```
 
 ## Todo
